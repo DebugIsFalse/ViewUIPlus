@@ -37195,20 +37195,21 @@ function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
         class: normalizeClass($options.titleClasses),
         onClick: _cache[1] || (_cache[1] = (...args) => $options.handleClickNode && $options.handleClickNode(...args))
       }, [
-        renderSlot(_ctx.$slots, "title", { data: $props.data }, () => [
-          $props.data.render ? (openBlock(), createBlock(_component_Render, {
-            key: 0,
-            render: $props.data.render,
-            data: $props.data,
-            node: $options.node
-          }, null, 8, ["render", "data", "node"])) : $options.isParentRender ? (openBlock(), createBlock(_component_Render, {
-            key: 1,
-            render: $options.parentRender,
-            data: $props.data,
-            node: $options.node
-          }, null, 8, ["render", "data", "node"])) : (openBlock(), createElementBlock(Fragment, { key: 2 }, [
-            createTextVNode(toDisplayString($props.data.title), 1)
-          ], 64))
+        $props.data.render ? (openBlock(), createBlock(_component_Render, {
+          key: 0,
+          render: $props.data.render,
+          data: $props.data,
+          node: $options.node
+        }, null, 8, ["render", "data", "node"])) : $options.isParentRender ? (openBlock(), createBlock(_component_Render, {
+          key: 1,
+          render: $options.parentRender,
+          data: $props.data,
+          node: $options.node
+        }, null, 8, ["render", "data", "node"])) : renderSlot(_ctx.$slots, "title", {
+          key: 2,
+          data: $props.data
+        }, () => [
+          createTextVNode(toDisplayString($props.data.title), 1)
         ])
       ], 2),
       createVNode(_component_collapse_transition, { appear: $props.appear }, {
@@ -37241,7 +37242,7 @@ const prefixCls$2 = "ivu-tree";
 const _sfc_main$6 = {
   name: "Tree",
   mixins: [Locale],
-  components: { TreeNode, Dropdown, DropdownMenu },
+  components: { TreeNode, Render, Dropdown, DropdownMenu },
   emits: ["on-select-change", "on-check-change", "on-contextmenu", "on-toggle-expand"],
   provide() {
     return {
@@ -37324,6 +37325,12 @@ const _sfc_main$6 = {
       } else {
         return this.emptyText;
       }
+    },
+    isParentRender() {
+      return !!this.render;
+    },
+    parentRender() {
+      return this.render || null;
     }
   },
   methods: {
@@ -37487,24 +37494,25 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
         "children-key": $props.childrenKey
       }, {
         title: withCtx(({ data }) => [
-          renderSlot(_ctx.$slots, "title", { data }, () => [
-            data.render ? (openBlock(), createBlock(_component_Render, {
-              key: 0,
-              render: data.render,
-              data,
-              node: _ctx.node
-            }, null, 8, ["render", "data", "node"])) : _ctx.isParentRender ? (openBlock(), createBlock(_component_Render, {
-              key: 1,
-              render: _ctx.parentRender,
-              data,
-              node: _ctx.node
-            }, null, 8, ["render", "data", "node"])) : (openBlock(), createElementBlock(Fragment, { key: 2 }, [
-              createTextVNode(toDisplayString(data.title), 1)
-            ], 64))
+          data.render ? (openBlock(), createBlock(_component_Render, {
+            key: 0,
+            render: data.render,
+            data,
+            node: [$data.flatState, $data.flatState.find((item2) => item2.nodeKey === data.nodeKey)]
+          }, null, 8, ["render", "data", "node"])) : $options.isParentRender ? (openBlock(), createBlock(_component_Render, {
+            key: 1,
+            render: $options.parentRender,
+            data,
+            node: [$data.flatState, $data.flatState.find((item2) => item2.nodeKey === data.nodeKey)]
+          }, null, 8, ["render", "data", "node"])) : renderSlot(_ctx.$slots, "title", {
+            key: 2,
+            data
+          }, () => [
+            createTextVNode(toDisplayString(data.title), 1)
           ])
         ]),
-        _: 3
-      }, 8, ["data", "multiple", "show-checkbox", "children-key"]);
+        _: 2
+      }, 1032, ["data", "multiple", "show-checkbox", "children-key"]);
     }), 128)),
     !$data.stateTree.length ? (openBlock(), createElementBlock("div", {
       key: 0,
@@ -38681,7 +38689,7 @@ var style = {
   }
 };
 const name = "view-ui-plus";
-const version$1 = "1.3.23";
+const version$1 = "1.3.24";
 const title = "ViewUIPlus";
 const description = "A high quality UI components Library with Vue.js 3";
 const homepage = "http://www.iviewui.com";
