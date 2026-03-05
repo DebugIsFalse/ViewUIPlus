@@ -9,11 +9,11 @@
             :show-checkbox="showCheckbox"
             :children-key="childrenKey">
             <template #title="{ data }">
-                <slot name="title" :data="data">
-                    <Render v-if="data.render" :render="data.render" :data="data" :node="node"></Render>
-                    <Render v-else-if="isParentRender" :render="parentRender" :data="data" :node="node"></Render>
-                    <template v-else>{{ data.title }}</template>
-                </slot>
+                <Render v-if="data.render" :render="data.render" :data="data" :node="[flatState, flatState.find(item => item.nodeKey === data.nodeKey)]"></Render>
+                <Render v-else-if="isParentRender" :render="parentRender" :data="data" :node="[flatState, flatState.find(item => item.nodeKey === data.nodeKey)]"></Render>
+                <template v-else>
+                    <slot name="title" :data="data">{{ data.title }}</slot>
+                </template>
             </template>
         </TreeNode>
         <div :class="[prefixCls + '-empty']" v-if="!stateTree.length">{{ localeEmptyText }}</div>
@@ -31,6 +31,7 @@
 <script>
     import { nextTick } from 'vue';
     import TreeNode from './node.vue';
+    import Render from './render';
     import Dropdown from '../dropdown/dropdown.vue';
     import DropdownMenu from '../dropdown/dropdown-menu.vue';
     import Locale from '../../mixins/locale';
@@ -40,7 +41,7 @@
     export default {
         name: 'Tree',
         mixins: [ Locale ],
-        components: { TreeNode, Dropdown, DropdownMenu },
+        components: { TreeNode, Render, Dropdown, DropdownMenu },
         emits: ['on-select-change', 'on-check-change', 'on-contextmenu', 'on-toggle-expand'],
         provide () {
             return {
@@ -124,6 +125,12 @@
                 } else {
                     return this.emptyText;
                 }
+            },
+            isParentRender () {
+                return !!this.render;
+            },
+            parentRender () {
+                return this.render || null;
             }
         },
         methods: {

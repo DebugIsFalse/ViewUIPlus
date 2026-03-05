@@ -12,11 +12,12 @@
                 :disabled="data.disabled || data.disableCheckbox"
                 @click.prevent="handleCheck"></Checkbox>
             <span :class="titleClasses" @click="handleClickNode">
-                <slot name="title" :data="data">
-                    <Render v-if="data.render" :render="data.render" :data="data" :node="node"></Render>
-                    <Render v-else-if="isParentRender" :render="parentRender" :data="data" :node="node"></Render>
-                    <template v-else>{{ data.title }}</template>
-                </slot>
+                
+                <Render v-if="data.render" :render="data.render" :data="data" :node="node"></Render>
+                <Render v-else-if="isParentRender" :render="parentRender" :data="data" :node="node"></Render>
+                <template v-else>
+                    <slot name="title" :data="data">{{ data.title }}</slot>
+                </template>
             </span>
             <collapse-transition :appear="appear">
                 <div class="ivu-tree-expand" v-if="data.expand">
